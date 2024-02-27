@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.*;
 import java.util.List;
-
+import ij.IJ;
 public class Main {
 
     public static void main(String[] args) {
