@@ -11,18 +11,7 @@ import ij.IJ;
 public class Main {
 
     public static void main(String[] args) {
-        try {
-            int[][] inputImage = readInputImage("./data/input.txt");
-            if (inputImage == null) {System.err.println("Error: Input image file is not valid.");return;}
-            BufferedImage textureImage = readTextureImage("input_image.png", "input.txt");
-            if (textureImage == null) {System.err.println("Error: Texture image file is not valid.");return;}
-            BufferedImage outputImage = generateOutputImage(inputImage, textureImage, "output.txt");
-            if (outputImage == null) {System.err.println("Error: Failed to generate output image.");return;}
-            saveOutputImage(outputImage, "output_image.png");
-            System.out.println("Output image generated successfully.");
-        } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
+
     }
 
 
