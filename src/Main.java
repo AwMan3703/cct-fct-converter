@@ -1,9 +1,10 @@
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import ij.IJ;
@@ -18,6 +19,34 @@ public class Main {
 
     }
 
+    private static List<List<Integer>> spaceSplitIntFile(String path) {
+        try { // Read all the values off the file
+            List<List<Integer>> result = new ArrayList<>(); // "wHy DiD yOu NoT uSe int[][]☝️🤓" shut up it's easier
+
+            File file = new File(path);
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) { // For each line in the file
+                String[] split = scanner.nextLine().split("\\s+");
+                List<Integer> splitInt = new ArrayList<Integer>();
+                for (String s : split) {
+                    try {
+                        splitInt.add(Integer.parseInt(s)); // try to convert to int
+                    } catch (NumberFormatException e) {} //idgaf just go on
+                }
+                result.add(splitInt);
+            }
+            /*result.forEach((line)->{ // Uncomment to print the generated table
+                System.out.println(line.toString());
+            });*/
+
+            return result;
+        } catch (FileNotFoundException e) {
+            System.err.println("Could not parse space-separated values file");
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void saveOutputImage(BufferedImage image, String fileName) {
         try {
