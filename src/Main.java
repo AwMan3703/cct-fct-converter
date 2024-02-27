@@ -82,6 +82,46 @@ public class Main {
         return src.getSubimage(0, 0, rect.width, rect.height);
     }
 
+    // Join two BufferedImage's together
+    private static BufferedImage stitch(BufferedImage a, BufferedImage b, boolean vertical) {
+        int width = vertical ? Math.max(a.getWidth(), b.getWidth()) : a.getWidth() + b.getWidth();
+        int height = vertical ? a.getHeight() + b.getHeight() : Math.max(a.getHeight(), b.getHeight());
+
+        BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2 = newImage.createGraphics();
+        Color oldColor = g2.getColor();
+
+        g2.setPaint(Color.BLACK);
+        g2.fillRect(0, 0, width, height);
+        g2.setColor(oldColor);
+        g2.drawImage(a, null, 0, 0);
+        if (vertical) {
+            g2.drawImage(b, null, 0, a.getHeight());
+        } else {
+            g2.drawImage(b, null, a.getWidth(), 0);
+        }
+        g2.dispose();
+
+        return newImage;
+    }
+
+    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap, Map<Integer, Rectangle> imageSectionsMap) {
+        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(inputMap) * inputMap.size());
+        for (int y = 0; y < inputMap.size(); y++) {
+            List<Integer> line = inputMap.get(y);
+            pieces.add(new ArrayList<>(line.size()));
+            for (int x = 0; x < line.size(); x++) {
+                Integer cell = line.get(x);
+
+                BufferedImage cutout = getImageSection(inputImg, imageSectionsMap.get(cell));
+                pieces.get(y).add(cutout);
+            }
+        }
+        return pieces;
+    }
+
+
     private static BufferedImage rearrange(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap) {
         Map<Integer, Integer> imageSectionsMap = mapImage();
 
