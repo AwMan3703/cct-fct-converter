@@ -47,7 +47,7 @@ public class Main {
         return null;
     }
 
-    public static void saveOutputImage(BufferedImage image, String fileName) {
+    private static void saveOutputImage(BufferedImage image, String fileName) {
         try {
             File output = new File(fileName);
             ImageIO.write(image, "PNG", output);
