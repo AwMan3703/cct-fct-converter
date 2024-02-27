@@ -13,13 +13,13 @@ public class Main {
         List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
         List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
 
-        BufferedImage inputImg = ImageIO.read(new File("src/data/inputimg.png"));
+        BufferedImage inputImg = ImageIO.read(new File("src/data/input_texture.png"));
         BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
 
         saveOutputImage(outputImg, "src/data/outputimg.png");
     }
 
-    private static int getMaxSublistLength(List<List<Integer>> list) {
+    private static <T> int getMaxSublistLength(List<List<T>> list) {
         return list.stream().max(Comparator.comparingInt(List::size)).get().size(); // Find longest list's length
     }
 
