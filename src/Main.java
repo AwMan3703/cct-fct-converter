@@ -123,10 +123,26 @@ public class Main {
 
 
     private static BufferedImage rearrange(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap) {
-        Map<Integer, Integer> imageSectionsMap = mapImage();
+        Map<Integer, Rectangle> imageSectionsMap = mapImage(inputImg, inputMap);
 
+        List<List<BufferedImage>> pieces = sliceImage(inputImg, inputMap, outputMap, imageSectionsMap);
 
-        return new BufferedImage(1, 1, 2);
+        int width = getMaxSublistLength(pieces);
+        int height = pieces.size();
+        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        for (List<BufferedImage> line : pieces) {
+
+            int lineWidth = line.size() * line.stream().max(Comparator.comparingInt(BufferedImage::getWidth)).get().getWidth();
+            int lineHeight = line.stream().max(Comparator.comparingInt(BufferedImage::getHeight)).get().getHeight();
+            BufferedImage blob = new BufferedImage(lineWidth, lineHeight, BufferedImage.TYPE_INT_ARGB);
+            for (BufferedImage cell : line) {
+                blob = stitch(blob, cell, false);
+            }
+
+            result = stitch(result, blob, true);
+        }
+
+        return result;
     }
 
     private static void saveOutputImage(BufferedImage image, String fileName) {
