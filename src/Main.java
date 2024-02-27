@@ -55,18 +55,25 @@ public class Main {
 
     // Maps a table of integers to square sections of a BufferedImage
     private static Map<Integer, Rectangle> mapImage(BufferedImage image, List<List<Integer>> intMap) {
-        int width = getMaxSublistLength(intMap);
-        int height = intMap.size();
+        int width = image.getWidth() / getMaxSublistLength(intMap);
+        int height = image.getHeight() / intMap.size();
         
-        Map<Integer, Rectangle> result;
-        for (int i = 0; i < intMap.size(); i++) {
-            List<Integer> line = intMap.get(i);
-            for (int j = 0; j < line.size(); j++) {
-                Integer cell = line.get(j);
+        Map<Integer, Rectangle> result = new HashMap<>();
+        for (int mapY = 0; mapY < intMap.size(); mapY++) {
+            List<Integer> line = intMap.get(mapY);
+            for (int mapX = 0; mapX < line.size(); mapX++) {
+                Integer cell = line.get(mapX);
 
-                //TODO: map int to rectangle here
+                Rectangle rect = new Rectangle(
+                        mapX * width,
+                        mapY * height,
+                        width, height
+                );
+                result.put(cell, rect);
             }
         }
+
+        return result;
     }
 
     // Totally original function that I didn't copy-paste from stackoverflow what are you even saying
