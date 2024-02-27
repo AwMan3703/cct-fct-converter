@@ -7,16 +7,13 @@ import java.util.List;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 
-import ij.IJ;
-import ij.ImagePlus;
 
 public class Main {
 
-    public static void main(String[] args) {
-        List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
-        List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
-        ImagePlus inputTplImg = IJ.openImage("src/data/input_texture.png");
-        ImagePlus outputTplImg = IJ.openImage("src/data/output_texture.png");
+        BufferedImage inputImg = ImageIO.read(new File("src/data/inputimg.png"));
+        BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
+
+        saveOutputImage(outputImg, "src//outputimg.png");
     }
 
     private static List<List<Integer>> spaceSplitIntFile(String path) {
