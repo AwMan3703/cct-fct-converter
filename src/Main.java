@@ -15,8 +15,8 @@ public class Main {
     public static void main(String[] args) {
         List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
         List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
-        ImagePlus inputImg = IJ.openImage("src/data/input_texture.png");
-
+        ImagePlus inputTplImg = IJ.openImage("src/data/input_texture.png");
+        ImagePlus outputTplImg = IJ.openImage("src/data/output_texture.png");
     }
 
     private static List<List<Integer>> spaceSplitIntFile(String path) {
@@ -39,7 +39,6 @@ public class Main {
             /*result.forEach((line)->{ // Uncomment to print the generated table
                 System.out.println(line.toString());
             });*/
-
             return result;
         } catch (FileNotFoundException e) {
             System.err.println("Could not parse space-separated values file");

@@ -30,7 +30,7 @@ public class MainLegacy {
                 System.err.println("Error: Failed to generate output image.");
                 return;
             }
-            saveOutputImage(outputImage, "output_image.png");
+            saveOutputImage(outputImage, "output_texture.png");
             System.out.println("Output image generated successfully.");
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
