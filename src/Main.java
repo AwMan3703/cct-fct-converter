@@ -51,6 +51,35 @@ public class Main {
         return null;
     }
 
+    // Maps a table of integers to square sections of a BufferedImage
+    private static Map<Integer, Rectangle> mapImage(BufferedImage image, List<List<Integer>> intMap) {
+        int width = getMaxSublistLength(intMap);
+        int height = intMap.size();
+        
+        Map<Integer, Rectangle> result;
+        for (int i = 0; i < intMap.size(); i++) {
+            List<Integer> line = intMap.get(i);
+            for (int j = 0; j < line.size(); j++) {
+                Integer cell = line.get(j);
+
+                //TODO: map int to rectangle here
+            }
+        }
+    }
+
+    // Totally original function that I didn't copy-paste from stackoverflow what are you even saying
+    // (thanks https://stackoverflow.com/a/4818980 for the utility <3)
+    private static BufferedImage getImageSection(BufferedImage src, Rectangle rect) {
+        return src.getSubimage(0, 0, rect.width, rect.height);
+    }
+
+    private static BufferedImage rearrange(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap) {
+        Map<Integer, Integer> imageSectionsMap = mapImage();
+
+
+        return new BufferedImage(1, 1, 2);
+    }
+
     private static void saveOutputImage(BufferedImage image, String fileName) {
         try {
             File output = new File(fileName);
