@@ -9,11 +9,14 @@ import javax.imageio.ImageIO;
 
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
+        List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
 
         BufferedImage inputImg = ImageIO.read(new File("src/data/inputimg.png"));
         BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
 
-        saveOutputImage(outputImg, "src//outputimg.png");
+        saveOutputImage(outputImg, "src/data/outputimg.png");
     }
 
     private static List<List<Integer>> spaceSplitIntFile(String path) {
