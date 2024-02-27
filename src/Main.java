@@ -19,6 +19,10 @@ public class Main {
         saveOutputImage(outputImg, "src/data/outputimg.png");
     }
 
+    private static int getMaxSublistLength(List<List<Integer>> list) {
+        return list.stream().max(Comparator.comparingInt(List::size)).get().size(); // Find longest list's length
+    }
+
     private static List<List<Integer>> spaceSplitIntFile(String path) {
         try { // Read all the values off the file
             List<List<Integer>> result = new ArrayList<>(); // "wHy DiD yOu NoT uSe int[][]☝️🤓" shut up it's easier
