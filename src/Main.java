@@ -5,12 +5,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.util.*;
-import java.util.List;
+
 import ij.IJ;
+import ij.ImagePlus;
+
 public class Main {
 
     public static void main(String[] args) {
+        List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
+        List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
+        ImagePlus inputImg = IJ.openImage("src/data/input_texture.png");
 
     }
 
