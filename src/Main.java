@@ -30,16 +30,18 @@ public class Main {
             File file = new File(path);
             Scanner scanner = new Scanner(file);
 
+            // Read the file
             while (scanner.hasNextLine()) { // For each line in the file
-                String[] split = scanner.nextLine().split("\\s+");
+                String[] split = scanner.nextLine().split("\\s+"); // Split by spaces
                 List<Integer> splitInt = new ArrayList<Integer>();
                 for (String s : split) {
                     try {
-                        splitInt.add(Integer.parseInt(s)); // try to convert to int
+                        splitInt.add(Integer.parseInt(s.trim())); // try to convert to int
                     } catch (NumberFormatException e) {} //idgaf just go on
                 }
                 result.add(splitInt);
             }
+
             /*result.forEach((line)->{ // Uncomment to print the generated table
                 System.out.println(line.toString());
             });*/
