@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.List;
 import javax.imageio.ImageIO;
 
+// FIXME: WRONG MAPPING: Create-standard to Fusion-standard
 public class Main {
     // I/O config
     private static final String defINPUT_PATH = "src/input.png"; // Default path to the input texture
