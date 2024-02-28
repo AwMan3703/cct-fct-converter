@@ -9,14 +9,25 @@ import javax.imageio.ImageIO;
 
 
 public class Main {
+    // I/O config
+    private static final String INPUT_PATH = "src/input.png"; // Path to the input texture
+    private static final String OUTPUT_PATH = "src/out/output.png"; // Where to save the output texture
+    private static final String INPUT_MAPPING_PATH = "src/mappings/input.txt"; // Path to the input texture format's mapping
+    private static final String OUTPUT_MAPPING_PATH = "src/mappings/output.txt"; // Path to the output texture format's mapping
+
+    // Advanced config
+    private static final String MAPPING_SEPARATOR_REGEX = "\\s+"; // Regex to match separator for mapping values
+
     public static void main(String[] args) throws IOException {
         List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
         List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
+        List<List<Integer>> inputMapping = readSpaceSplitIntFile(INPUT_MAPPING_PATH);
+        List<List<Integer>> outputMapping = readSpaceSplitIntFile(OUTPUT_MAPPING_PATH);
 
-        BufferedImage inputImg = ImageIO.read(new File("src/data/input_texture.png"));
+        BufferedImage inputImg = ImageIO.read(new File(INPUT_PATH));
         BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
 
-        saveOutputImage(outputImg, "src/data/outputimg.png");
+        saveOutputImage(outputImg, OUTPUT_PATH);
     }
 
     private static <T> int getMaxSublistLength(List<List<T>> list) {
@@ -32,7 +43,7 @@ public class Main {
 
             // Read the file
             while (scanner.hasNextLine()) { // For each line in the file
-                String[] split = scanner.nextLine().split("\\s+"); // Split by spaces
+                String[] split = scanner.nextLine().split(MAPPING_SEPARATOR_REGEX); // Split by separator
                 List<Integer> splitInt = new ArrayList<Integer>();
                 for (String s : split) {
                     try {

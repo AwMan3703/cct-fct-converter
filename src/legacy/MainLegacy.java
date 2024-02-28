@@ -15,7 +15,7 @@ public class MainLegacy {
 
     public static void main(String[] args) {
         try {
-            int[][] inputImage = readInputImage("./data/input.txt");
+            int[][] inputImage = readInputImage("./mappings/input.txt");
             if (inputImage == null) {
                 System.err.println("Error: Input image file is not valid.");
                 return;
