@@ -19,10 +19,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // "wHy DiD yOu NoT uSe int[][]☝️🤓" shut up
-        List<List<Integer>> inputMapping = readSpaceSplitIntFile(INPUT_MAPPING_PATH);
-        List<List<Integer>> outputMapping = readSpaceSplitIntFile(OUTPUT_MAPPING_PATH);
+        List<List<Integer>> inputMapping = readSpaceSplitIntFile(
+                args.length==3 ? args[1] : defINPUT_MAPPING_PATH); // If the amount of args is right, use those as paths
+        List<List<Integer>> outputMapping = readSpaceSplitIntFile(
+                args.length==3 ? args[2] : defOUTPUT_MAPPING_PATH); // Same as 2 lines above
 
-        BufferedImage inputImg = ImageIO.read(new File(INPUT_PATH));
+        BufferedImage inputImg = ImageIO.read(new File(
+                args.length==3 ? args[0] : defINPUT_PATH));
         BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
 
         saveOutputImage(outputImg, OUTPUT_PATH);
