@@ -21,6 +21,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
         List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
+        // "wHy DiD yOu NoT uSe int[][]☝️🤓" shut up
         List<List<Integer>> inputMapping = readSpaceSplitIntFile(INPUT_MAPPING_PATH);
         List<List<Integer>> outputMapping = readSpaceSplitIntFile(OUTPUT_MAPPING_PATH);
 
@@ -30,13 +31,15 @@ public class Main {
         saveOutputImage(outputImg, OUTPUT_PATH);
     }
 
+    // Get the length of the longest sublist
     private static <T> int getMaxSublistLength(List<List<T>> list) {
         return list.stream().max(Comparator.comparingInt(List::size)).get().size(); // Find longest list's length
     }
 
-    private static List<List<Integer>> spaceSplitIntFile(String path) {
+    // Load mappings from map files
+    private static List<List<Integer>> readSpaceSplitIntFile(String path) {
         try { // Read all the values off the file
-            List<List<Integer>> result = new ArrayList<>(); // "wHy DiD yOu NoT uSe int[][]☝️🤓" shut up it's easier
+            List<List<Integer>> result = new ArrayList<>();
 
             File file = new File(path);
             Scanner scanner = new Scanner(file);
@@ -123,6 +126,7 @@ public class Main {
         List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(inputMap) * inputMap.size());
         for (int y = 0; y < inputMap.size(); y++) {
             List<Integer> line = inputMap.get(y);
+    // Cut the image into various pieces, as described by the imageSectionsMap parameter
         List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(map) * map.size());
         for (int y = 0; y < map.size(); y++) {
             List<Integer> line = map.get(y);
@@ -137,7 +141,7 @@ public class Main {
         return pieces;
     }
 
-
+    // Cut the input texture in pieces, then rearrange it to match the output mapping
     private static BufferedImage rearrange(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap) {
         Map<Integer, Rectangle> imageSectionsMap = mapImage(inputImg, inputMap);
 
@@ -161,6 +165,7 @@ public class Main {
         return result;
     }
 
+    // Write the output image
     private static void saveOutputImage(BufferedImage image, String fileName) {
         try {
             File output = new File(fileName);
