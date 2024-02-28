@@ -46,8 +46,10 @@ public class Main {
                 String[] split = scanner.nextLine().split(MAPPING_SEPARATOR_REGEX); // Split by separator
                 List<Integer> splitInt = new ArrayList<Integer>();
                 for (String s : split) {
+                    s = s.trim();
+                    if (s=="-") {break;} // If the character is -, newline here
                     try {
-                        splitInt.add(Integer.parseInt(s.trim())); // try to convert to int
+                        splitInt.add(Integer.parseInt(s)); // try to convert to int
                     } catch (NumberFormatException e) {} //idgaf just go on
                 }
                 result.add(splitInt);
@@ -90,7 +92,7 @@ public class Main {
     // Totally original function that I didn't copy-paste from stackoverflow what are you even saying
     // (thanks https://stackoverflow.com/a/4818980 for the utility <3)
     private static BufferedImage getImageSection(BufferedImage src, Rectangle rect) {
-        return src.getSubimage(0, 0, rect.width, rect.height);
+        return src.getSubimage(rect.x, rect.y, rect.width, rect.height);
     }
 
     // Join two BufferedImage's together
@@ -121,6 +123,9 @@ public class Main {
         List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(inputMap) * inputMap.size());
         for (int y = 0; y < inputMap.size(); y++) {
             List<Integer> line = inputMap.get(y);
+        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(map) * map.size());
+        for (int y = 0; y < map.size(); y++) {
+            List<Integer> line = map.get(y);
             pieces.add(new ArrayList<>(line.size()));
             for (int x = 0; x < line.size(); x++) {
                 Integer cell = line.get(x);
@@ -136,7 +141,7 @@ public class Main {
     private static BufferedImage rearrange(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap) {
         Map<Integer, Rectangle> imageSectionsMap = mapImage(inputImg, inputMap);
 
-        List<List<BufferedImage>> pieces = sliceImage(inputImg, inputMap, outputMap, imageSectionsMap);
+        List<List<BufferedImage>> pieces = sliceImage(inputImg, outputMap, imageSectionsMap);
 
         int width = getMaxSublistLength(pieces);
         int height = pieces.size();
