@@ -19,10 +19,8 @@ public class Main {
     private static final String MAPPING_SEPARATOR_REGEX = "\\s+"; // Regex to match separator for mapping values
 
     public static void main(String[] args) throws IOException {
-        List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
-        List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
-        List<List<Integer>> inputMapping = readSpaceSplitIntFile(INPUT_MAPPING_PATH);
-        List<List<Integer>> outputMapping = readSpaceSplitIntFile(OUTPUT_MAPPING_PATH);
+        List<List<Integer>> inputMapping = spaceSplitIntFile(INPUT_MAPPING_PATH);
+        List<List<Integer>> outputMapping = spaceSplitIntFile(OUTPUT_MAPPING_PATH);
 
         BufferedImage inputImg = ImageIO.read(new File(INPUT_PATH));
         BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
@@ -67,7 +65,7 @@ public class Main {
     // Maps a table of integers to square sections of a BufferedImage
     private static Map<Integer, Rectangle> mapImage(BufferedImage image, List<List<Integer>> intMap) {
         int width = image.getWidth() / getMaxSublistLength(intMap);
-        int height = image.getHeight() / intMap.size();
+        int height = width;
         
         Map<Integer, Rectangle> result = new HashMap<>();
         for (int mapY = 0; mapY < intMap.size(); mapY++) {
@@ -90,7 +88,7 @@ public class Main {
     // Totally original function that I didn't copy-paste from stackoverflow what are you even saying
     // (thanks https://stackoverflow.com/a/4818980 for the utility <3)
     private static BufferedImage getImageSection(BufferedImage src, Rectangle rect) {
-        return src.getSubimage(0, 0, rect.width, rect.height);
+        return src.getSubimage(rect.x, rect.y, rect.width, rect.height);
     }
 
     // Join two BufferedImage's together
@@ -117,16 +115,16 @@ public class Main {
         return newImage;
     }
 
-    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap, Map<Integer, Rectangle> imageSectionsMap) {
-        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(inputMap) * inputMap.size());
-        for (int y = 0; y < inputMap.size(); y++) {
-            List<Integer> line = inputMap.get(y);
+    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> map, Map<Integer, Rectangle> imageSectionsMap) {
+        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(map) * map.size());
+        for (int y = 0; y < map.size(); y++) {
+            List<Integer> line = map.get(y);
             pieces.add(new ArrayList<>(line.size()));
             for (int x = 0; x < line.size(); x++) {
                 Integer cell = line.get(x);
 
                 BufferedImage cutout = getImageSection(inputImg, imageSectionsMap.get(cell));
-                pieces.get(y).add(cutout);
+                pieces.get(y).add(debugMark(cutout, (10*y)+x+""));
             }
         }
         return pieces;
@@ -136,7 +134,7 @@ public class Main {
     private static BufferedImage rearrange(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap) {
         Map<Integer, Rectangle> imageSectionsMap = mapImage(inputImg, inputMap);
 
-        List<List<BufferedImage>> pieces = sliceImage(inputImg, inputMap, outputMap, imageSectionsMap);
+        List<List<BufferedImage>> pieces = sliceImage(inputImg, outputMap, imageSectionsMap);
 
         int width = getMaxSublistLength(pieces);
         int height = pieces.size();
@@ -155,6 +153,17 @@ public class Main {
 
         return result;
     }
+
+    private static BufferedImage debugMark(BufferedImage image, String text) {
+        return image;
+        /*Graphics g = image.getGraphics();
+        g.setColor(Color.green);
+        g.setFont(new Font("Arial", Font.ITALIC, 12));
+        g.drawString(text, image.getWidth()/2, image.getHeight()/2);
+        g.drawRect(0, 0, image.getWidth()-1, image.getHeight()-1);
+        g.dispose();
+        return image;*/
+    };
 
     private static void saveOutputImage(BufferedImage image, String fileName) {
         try {
