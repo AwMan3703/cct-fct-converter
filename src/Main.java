@@ -66,7 +66,7 @@ public class Main {
     // Maps a table of integers to square sections of a BufferedImage
     private static Map<Integer, Rectangle> mapImage(BufferedImage image, List<List<Integer>> intMap) {
         int width = image.getWidth() / getMaxSublistLength(intMap);
-        int height = image.getHeight() / intMap.size();
+        int height = width;
         
         Map<Integer, Rectangle> result = new HashMap<>();
         for (int mapY = 0; mapY < intMap.size(); mapY++) {
