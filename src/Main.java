@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-
 public class Main {
     // I/O config
     private static final String INPUT_PATH = "src/input.png"; // Path to the input texture
@@ -19,8 +18,6 @@ public class Main {
     private static final String MAPPING_SEPARATOR_REGEX = "\\s+"; // Regex to match separator for mapping values
 
     public static void main(String[] args) throws IOException {
-        List<List<Integer>> inputMapping = spaceSplitIntFile("src/data/input.txt");
-        List<List<Integer>> outputMapping = spaceSplitIntFile("src/data/output.txt");
         // "wHy DiD yOu NoT uSe int[][]☝️🤓" shut up
         List<List<Integer>> inputMapping = readSpaceSplitIntFile(INPUT_MAPPING_PATH);
         List<List<Integer>> outputMapping = readSpaceSplitIntFile(OUTPUT_MAPPING_PATH);
@@ -58,12 +55,9 @@ public class Main {
                 result.add(splitInt);
             }
 
-            /*result.forEach((line)->{ // Uncomment to print the generated table
-                System.out.println(line.toString());
-            });*/
             return result;
         } catch (FileNotFoundException e) {
-            System.err.println("Could not parse space-separated values file");
+            System.err.println("Error: Could not parse space-separated values file");
             e.printStackTrace();
         }
         return null;
@@ -106,11 +100,6 @@ public class Main {
         BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2 = newImage.createGraphics();
-        Color oldColor = g2.getColor();
-
-        g2.setPaint(Color.BLACK);
-        g2.fillRect(0, 0, width, height);
-        g2.setColor(oldColor);
         g2.drawImage(a, null, 0, 0);
         if (vertical) {
             g2.drawImage(b, null, 0, a.getHeight());
@@ -122,11 +111,8 @@ public class Main {
         return newImage;
     }
 
-    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> inputMap, List<List<Integer>> outputMap, Map<Integer, Rectangle> imageSectionsMap) {
-        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(inputMap) * inputMap.size());
-        for (int y = 0; y < inputMap.size(); y++) {
-            List<Integer> line = inputMap.get(y);
     // Cut the image into various pieces, as described by the imageSectionsMap parameter
+    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> map, Map<Integer, Rectangle> imageSectionsMap) {
         List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(map) * map.size());
         for (int y = 0; y < map.size(); y++) {
             List<Integer> line = map.get(y);
@@ -172,7 +158,7 @@ public class Main {
             ImageIO.write(image, "PNG", output);
             System.out.println("Output image saved successfully as " + fileName);
         } catch (IOException e) {
-            System.err.println("Error: Failed to save output image.");
+            System.err.println("Error: Failed to save output image");
         }
     }
 }
