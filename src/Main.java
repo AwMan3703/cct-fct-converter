@@ -10,10 +10,10 @@ import javax.imageio.ImageIO;
 
 public class Main {
     // I/O config
-    private static final String defINPUT_PATH = "src/input.png"; // Default path to the input texture
-    private static final String OUTPUT_PATH = "src/out/output.png"; // Path to save the output texture in
-    private static final String defINPUT_MAPPING_PATH = "src/input.txt"; // Default path to the input texture format's mapping
-    private static final String defOUTPUT_MAPPING_PATH = "src/output.txt"; // Default path to the output texture format's mapping
+    private static final String defINPUT_PATH = "input.png"; // Default path to the input texture
+    private static final String OUTPUT_PATH = "out/output.png"; // Path to save the output texture in
+    private static final String defINPUT_MAPPING_PATH = "input.txt"; // Default path to the input texture format's mapping
+    private static final String defOUTPUT_MAPPING_PATH = "output.txt"; // Default path to the output texture format's mapping
 
     // Advanced config
     private static final String MAPPING_SEPARATOR_REGEX = "\\s+"; // Regex to match separator for mapping values
