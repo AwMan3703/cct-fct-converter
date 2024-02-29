@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class Main {
                 args.length==3 ? args[0] : defINPUT_PATH)); // Same as 5 lines above
         BufferedImage outputImg = rearrange(inputImg, inputMapping, outputMapping);
 
-        saveOutputImage(outputImg, OUTPUT_PATH);
+        saveOutputImage(trimEmptySpace(outputImg), OUTPUT_PATH);
     }
 
     // Get the length of the longest sublist
@@ -152,6 +153,35 @@ public class Main {
         }
 
         return result;
+    }
+
+    // Trim excess empty space from a BufferedImage
+    // (https://copyprogramming.com/howto/remove-blank-space-at-start-java) because I couldn't be bothered
+    public static BufferedImage trimEmptySpace(BufferedImage image) {
+        int minY = 0, maxY = 0, minX = Integer.MAX_VALUE, maxX = 0;
+        boolean isBlank, minYIsDefined = false;
+        Raster raster = image.getRaster();
+        for (int y = 0; y < image.getHeight(); y++) {
+            isBlank = true;
+            for (int x = 0; x < image.getWidth(); x++) {
+                //Change condition to (raster.getSample(x, y, 3) != 0)
+                //for better performance
+                if (raster.getPixel(x, y, (int[]) null)[3] != 0) {
+                    isBlank = false;
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                }
+            }
+            if (!isBlank) {
+                if (!minYIsDefined) {
+                    minY = y;
+                    minYIsDefined = true;
+                } else {
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        return image.getSubimage(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 
     // Write the output image
