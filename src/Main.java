@@ -7,7 +7,6 @@ import java.util.*;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-// FIXME: WRONG MAPPING: Create-standard to Fusion-standard
 public class Main {
     // I/O config
     private static final String defINPUT_PATH = "src/input.png"; // Default path to the input texture
@@ -96,6 +95,22 @@ public class Main {
         return src.getSubimage(rect.x, rect.y, rect.width, rect.height);
     }
 
+    // Cut the image into various pieces, as described by the imageSectionsMap parameter
+    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> map, Map<Integer, Rectangle> imageSectionsMap) {
+        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(map) * map.size());
+        for (int y = 0; y < map.size(); y++) {
+            List<Integer> line = map.get(y);
+            pieces.add(new ArrayList<>(line.size()));
+            for (int x = 0; x < line.size(); x++) {
+                Integer cell = line.get(x);
+
+                BufferedImage cutout = getImageSection(inputImg, imageSectionsMap.get(cell));
+                pieces.get(y).add(cutout);
+            }
+        }
+        return pieces;
+    }
+
     // Join two BufferedImage's together
     private static BufferedImage stitch(BufferedImage a, BufferedImage b, boolean vertical) {
         int width = vertical ? Math.max(a.getWidth(), b.getWidth()) : a.getWidth() + b.getWidth();
@@ -113,22 +128,6 @@ public class Main {
         g2.dispose();
 
         return newImage;
-    }
-
-    // Cut the image into various pieces, as described by the imageSectionsMap parameter
-    private static List<List<BufferedImage>> sliceImage(BufferedImage inputImg, List<List<Integer>> map, Map<Integer, Rectangle> imageSectionsMap) {
-        List<List<BufferedImage>> pieces = new ArrayList<>(getMaxSublistLength(map) * map.size());
-        for (int y = 0; y < map.size(); y++) {
-            List<Integer> line = map.get(y);
-            pieces.add(new ArrayList<>(line.size()));
-            for (int x = 0; x < line.size(); x++) {
-                Integer cell = line.get(x);
-
-                BufferedImage cutout = getImageSection(inputImg, imageSectionsMap.get(cell));
-                pieces.get(y).add(cutout);
-            }
-        }
-        return pieces;
     }
 
     // Cut the input texture in pieces, then rearrange it to match the output mapping
